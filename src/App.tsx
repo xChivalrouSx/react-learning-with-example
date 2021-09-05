@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { Nav, Navbar } from 'react-bootstrap';
+import Contact from './components/contact-example/';
+import "./style.css";
 
-function App() {
+
+const App = () => {
+  const [pageType, setPageType] = useState("home");
+
+  const NavBarClickHandle = (event: any) => {
+    setPageType(event.target.id);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar bg="dark" variant="dark">        
+        <Navbar.Brand id="home" href="#" className="m-2" onClick={NavBarClickHandle}>Examples</Navbar.Brand>
+        <Nav className="me-auto">
+          <Nav.Link id="contact" href="#contact" className="m-2" onClick={NavBarClickHandle}>Contact</Nav.Link>
+        </Nav>
+      </Navbar>
+      
+      <div className="center-div">
+          <Contact cssClass={pageType === "contact" ? "" : "hidden-element"}/>
+      </div>  
+    </>
   );
 }
 
