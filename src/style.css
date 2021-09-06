@@ -7,3 +7,12 @@
 .hidden-element {
 	display: none;
 }
+
+.no-border {
+	border: 0;
+	box-shadow: none;
+}
+
+.basic-border {
+	border: 1px solid black;
+}
