@@ -16,3 +16,7 @@
 .basic-border {
 	border: 1px solid black;
 }
+
+.left-margin-2 {
+	margin-left: 10px;
+}
