@@ -9,14 +9,36 @@
 }
 
 .no-border {
+	margin-top: 2px;
 	border: 0;
 	box-shadow: none;
 }
 
 .basic-border {
 	border: 1px solid black;
+	min-width: 365px;
 }
 
-.left-margin-2 {
+.left-margin-10 {
 	margin-left: 10px;
+}
+
+.right-margin-10 {
+	margin-right: 10px;
+}
+
+.bg-aliceblue {
+	background-color: aliceblue;
+}
+
+.font-size-11px {
+	font-size: 11px;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.text-underline {
+	text-decoration: underline;
 }

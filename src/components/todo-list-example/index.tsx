@@ -3,7 +3,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { CheckAll } from 'react-bootstrap-icons';
 import ToDoListItem, { ToDoInfo } from './ToDoListItem';
 
-const toDoDefaultItems: ToDoInfo[] = [
+var DefaulttoDoItems: ToDoInfo[] = [
     {
         id: 1,
         text: "Work 1",
@@ -21,24 +21,46 @@ const toDoDefaultItems: ToDoInfo[] = [
     }
 ]
 
+const IsAllDone = (itemList: ToDoInfo[]): boolean => {
+    const resultList = GetDoneItemsWithDoneProp(itemList, true);
+    return (resultList.length > 0 && resultList.length === itemList.length);
+}
+
+const GetDoneItemsWithDoneProp = (itemList: ToDoInfo[], shouldDone: boolean): ToDoInfo[] => {
+    return itemList.filter((item) => {
+        if(item.isDone === shouldDone) {
+            return true;
+        }
+        return false;
+    });
+}
+
 const ToDoList = (prop: {cssClass: string}) => {
-    const [toDoItemList, setToDoItemList] = useState(toDoDefaultItems);
-    const [allSelected, setAllSelected] = useState(false);
+    const [allItems, setAllItems] = useState(DefaulttoDoItems.slice());
+    const [toDoItemList, setToDoItemList] = useState(DefaulttoDoItems);
+    const [allSelected, setAllSelected] = useState(IsAllDone(DefaulttoDoItems));
     const [newItem, setNewItem] = useState("");
-    
+    const [notDoneItemCount, setNotDoneItemCount] = useState(2); // GetNotDoneItems(toDoDefaultItems).length);
+    const [anyDone, setAnyDone] = useState(true); //GetDoneItems(toDoDefaultItems).length > 0);
+    const [listType, setListType] = useState("All");
+
     useEffect(() => {
-        CheckAndSetAllSelected();
-    }, [toDoItemList]); // eslint-disable-line react-hooks/exhaustive-deps
-    // Warning disabled above. Because I do not need 'allSelected' in useEffect items.
-    
-    const CheckAndSetAllSelected = () => {
-        if(isAllDone() && !allSelected) {
-            setAllSelected(true);
+        if(listType === "All") {
+            setToDoItemList(allItems);
         }
-        else if(!isAllNotDone() && allSelected) {
-            setAllSelected(false);
+        else if(listType === "Active") {
+            setToDoItemList(GetDoneItemsWithDoneProp(allItems, false));
         }
-    }
+        else if(listType === "Complited") {
+            setToDoItemList(GetDoneItemsWithDoneProp(allItems, true));
+        }
+    }, [allItems, listType]);
+
+    useEffect(() => {
+        setAllSelected(IsAllDone(toDoItemList));
+        setNotDoneItemCount(GetDoneItemsWithDoneProp(toDoItemList, false).length);
+        setAnyDone(GetDoneItemsWithDoneProp(toDoItemList, true).length > 0);
+    }, [toDoItemList, listType]);
 
     const OnTextChange = (event: any) => {
         setNewItem(event.target.value);
@@ -47,39 +69,79 @@ const ToDoList = (prop: {cssClass: string}) => {
     const OnKeyPress = (event: any) => {
         if(event.key === "Enter") {
             var tmpId: number = 0;
-            if(toDoItemList.length > 0) {
-                tmpId = toDoItemList[toDoItemList.length - 1].id + 1;
+            if(allItems.length > 0) {
+                tmpId = allItems[allItems.length - 1].id + 1;
             }
-            setToDoItemList([...toDoItemList, {id: tmpId, text: newItem, isDone: false}]);
+            setListType("All");
+            setAllItems([...allItems, {id: tmpId, text: newItem, isDone: false}]);
             setNewItem("");
         }
     }
 
-    const OnAllClick = (event: any) => {
-        setToDoItemList(
-            toDoItemList.map((item) => {
-                return {...item, isDone: !allSelected};
+    const OnAllClick = () => {
+        setAllItems(
+            allItems.map((item) => {
+                const isInScreen = toDoItemList.some((innerItem) => {
+                    if(item.id === innerItem.id) {
+                        return true;
+                    }
+                    return false;
+                });
+                if(isInScreen && !allSelected && !item.isDone) {
+                    item.isDone = true;
+                }
+                else if(isInScreen && allSelected && item.isDone) {
+                    item.isDone = false;
+                }
+                return item;
             })
         );
-        setAllSelected(!allSelected);
     }
 
-    const isAllDone = (): boolean => {
-        return toDoItemList.every((item) => { return item.isDone });
+    const OnItemChange = (changedItem: ToDoInfo) => {
+        setAllItems(
+            allItems.map((item) => {
+                if (item.id === changedItem.id) {
+                    item.text = changedItem.text;
+                    item.isDone = changedItem.isDone;
+                }
+                return item;
+            })
+        );
     }
 
-    const isAllNotDone = (): boolean => {
-        return toDoItemList.every((item) => { return !item.isDone });
+    const OnItemRemove = (itemId: number) => {
+        setAllItems(
+            allItems.filter((item) => {
+                if (item.id === itemId) {
+                    return false;
+                }
+                return true;
+            })
+        );
     }
 
-    const IsItemChange = (item: ToDoInfo) => {
-        toDoItemList.forEach((x) => {
-            if(x.id === item.id) {
-                x.isDone = item.isDone;
-                x.text = item.text;
+    const OnListSelectionChange = (event: any) => {
+        setListType(event.target.innerText);
+    }
+
+    const OnRemoveCompleted = () => {
+        const removeList = toDoItemList.filter((item) => {
+            if(item.isDone) {
+                return true;
             }
+            return false;
         });
-        CheckAndSetAllSelected();
+        setAllItems(
+            allItems.filter((item) => {
+                return !removeList.some((innerItem) => {
+                    if(item.id === innerItem.id) {
+                        return true;
+                    }
+                    return false;
+                });
+            })
+        );
     }
 
     return (
@@ -88,7 +150,9 @@ const ToDoList = (prop: {cssClass: string}) => {
             <hr />
             <Form.Group as={Row} className="m-1">
                 <Col sm={2}>
-                    <Button variant={allSelected ? "secondary" : "outline-secondary"} onClick={OnAllClick}>
+                    <Button 
+                        variant={allSelected ? "secondary" : "outline-secondary"} 
+                        onClick={OnAllClick}>
                             <CheckAll size={20}/>
                     </Button>
                 </Col>
@@ -101,8 +165,31 @@ const ToDoList = (prop: {cssClass: string}) => {
                 </Col>
             </Form.Group>
             {toDoItemList.map((toDoItem) => {
-                return <ToDoListItem key={toDoItem.id} itemInfo={toDoItem} OnItemChange={IsItemChange}/>
+                return <ToDoListItem 
+                            key={toDoItem.id} 
+                            itemInfo={toDoItem} 
+                            OnItemChange={OnItemChange} 
+                            OnItemRemove={OnItemRemove}/>
             })}
+            <hr />
+            <Form.Group as={Row} className="m-1 font-size-11px">
+                <Col sm={3}>
+                    <div>{notDoneItemCount} item left</div>
+                </Col>
+                <Col sm={5}>
+                    <span className={"cursor-pointer " + (listType === "All" ? "text-underline": "")}
+                        onClick={OnListSelectionChange}>All</span> 
+                    <span> | </span> 
+                    <span className={"cursor-pointer " + (listType === "Active" ? "text-underline": "")}
+                        onClick={OnListSelectionChange}>Active</span>
+                    <span> | </span> 
+                    <span className={"cursor-pointer " + (listType === "Complited" ? "text-underline": "")}
+                        onClick={OnListSelectionChange}>Complited</span>
+                </Col>
+                <Col sm={4}>
+                    {anyDone && <div className="cursor-pointer" onClick={OnRemoveCompleted}>Clear Completed</div>}
+                </Col>
+            </Form.Group>
         </div>
     );
 }
