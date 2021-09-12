@@ -23,7 +23,7 @@ const contactDefaultList: ContactInfo[] = [
     }
 ];
 
-const Contact = (prop: {cssClass: string}) => {
+const Contact = () => {
     
     const [contactList, setContactList] = useState(contactDefaultList)
 
@@ -32,7 +32,7 @@ const Contact = (prop: {cssClass: string}) => {
     }
 
     return (
-        <div className={prop.cssClass}>
+        <div>
             <h1 className="mt-5 text-center">Contact List</h1>
             <hr />
             <ContactList contactList={contactList} />

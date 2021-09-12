@@ -35,7 +35,7 @@ const GetDoneItemsWithDoneProp = (itemList: ToDoInfo[], shouldDone: boolean): To
     });
 }
 
-const ToDoList = (prop: {cssClass: string}) => {
+const ToDoList = () => {
     const [allItems, setAllItems] = useState(DefaulttoDoItems.slice());
     const [toDoItemList, setToDoItemList] = useState(DefaulttoDoItems);
     const [allSelected, setAllSelected] = useState(IsAllDone(DefaulttoDoItems));
@@ -145,7 +145,7 @@ const ToDoList = (prop: {cssClass: string}) => {
     }
 
     return (
-        <div className={"mt-5 p-2 basic-border " + prop.cssClass}>
+        <div className="mt-5 p-2 basic-border">
             <h1 className="text-center">To Do List</h1>
             <hr />
             <Form.Group as={Row} className="m-1">

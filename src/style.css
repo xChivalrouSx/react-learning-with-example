@@ -42,3 +42,18 @@
 .text-underline {
 	text-decoration: underline;
 }
+
+.nav-bar-element {
+	text-decoration: none;
+	color: grey;
+	margin: 10px;
+}
+
+.nav-bar-element:hover {
+	color: white;
+}
+
+.nav-bar-header {
+	color: darkgrey;
+	font-size: x-large;
+}

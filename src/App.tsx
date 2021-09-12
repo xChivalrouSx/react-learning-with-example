@@ -1,32 +1,38 @@
-import { useState } from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
+import {
+  BrowserRouter as Router, Link, Route, Switch
+} from "react-router-dom";
 import Contact from './components/contact-example/';
 import ToDoList from './components/todo-list-example/';
 import "./style.css";
 
 
 const App = () => {
-  const [pageType, setPageType] = useState("home");
-
-  const NavBarClickHandle = (event: any) => {
-    setPageType(event.target.id);
-  }
-
-  return (
-    <>
-      <Navbar bg="dark" variant="dark">        
-        <Navbar.Brand id="home" href="#" className="m-2" onClick={NavBarClickHandle}>Examples</Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link id="contact" href="#contact" className="m-2" onClick={NavBarClickHandle}>Contact List</Nav.Link>
-          <Nav.Link id="todo" href="#todo" className="m-2" onClick={NavBarClickHandle}>To Do List</Nav.Link>
-        </Nav>
-      </Navbar>
+  return(
+    <Router>
+       <Navbar bg="dark" variant="dark">        
+         <Link to="/" className="nav-bar-element nav-bar-header">Examples</Link>
+         <Nav className="me-auto">
+           <Link to="/contact" className="nav-bar-element">Contact List</Link>
+           <Link to="/todo" className="nav-bar-element">To Do List</Link>
+         </Nav>
+       </Navbar>
+       
+       <div className="center-div">
+        <Switch>
+          <Route path="/contact">
+            <Contact />
+          </Route>
+          <Route path="/todo">
+           <ToDoList />
+          </Route>
+          <Route path="/">
+            <h3 style={{marginTop: 50}}>Welcome my react-learning-with-example app.</h3>
+          </Route>
+        </Switch>
+      </div>
       
-      <div className="center-div">
-          <Contact cssClass={pageType === "contact" ? "" : "hidden-element"}/>
-          <ToDoList cssClass={pageType === "todo" ? "" : "hidden-element"}/>
-      </div>  
-    </>
+    </Router>
   );
 }
 
