@@ -57,3 +57,7 @@
 	color: darkgrey;
 	font-size: x-large;
 }
+
+label {
+	display: block;
+}
