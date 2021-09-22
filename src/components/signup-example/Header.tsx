@@ -1,8 +1,12 @@
 import React from 'react';
 
-const Header = () => { 
+export interface PropExample {
+    name: string;
+}
+
+const Header = (props: {example: PropExample}) => { 
     
-    console.log("Re-render");
+    console.log("Re-render : " + props.example.name);
     
     return (
         <h1>Sign Up</h1> 
