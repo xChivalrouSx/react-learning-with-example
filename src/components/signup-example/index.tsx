@@ -1,5 +1,5 @@
 import Button from '@restart/ui/esm/Button';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import SignUpHeader from './Header';
 import SignUp from './SignUp';
 
@@ -9,6 +9,10 @@ const SignUpForm = () => {
 
     const propValue = useMemo(() => {
         return { name: "test-name"};
+    }, []);
+
+    const clickMeEvent: () => void = useCallback(() => {
+        setNumber((prevState) => prevState + 1);
     }, []);
 
     return (
@@ -24,7 +28,7 @@ const SignUpForm = () => {
 
             <hr />
 
-            <SignUpHeader example={propValue}/>
+            <SignUpHeader example={propValue} clickMe={clickMeEvent}/>
             
             <hr />
             
