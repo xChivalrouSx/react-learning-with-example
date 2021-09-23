@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router, Link, Route, Switch
 } from "react-router-dom";
 import Contact from './components/contact-example';
+import ContextTest from './components/context-example/';
 import { MTable, MTableBug } from './components/material-table-example';
 import SignUpForm from './components/signup-example';
 import ToDoList from './components/todo-list-example';
@@ -21,6 +22,7 @@ const App = () => {
            <Link to="/sign-up" className="nav-bar-element">Sign Up</Link>
            <Link to="/m-table" className="nav-bar-element">Material Table</Link>
            <Link to="/m-table-bug" className="nav-bar-element">Material Table With Bug</Link>
+           <Link to="/context-example" className="nav-bar-element">Context Example</Link>
          </Nav>
        </Navbar>
        
@@ -31,6 +33,7 @@ const App = () => {
           <Route path="/sign-up" component={SignUpForm} />
           <Route path="/m-table" component={MTable} />
           <Route path="/m-table-bug" component={MTableBug} />
+          <Route path="/context-example" component={ContextTest} />
           <Route path="/">
             <h3 style={{marginTop: 50}}>Welcome my react-learning-with-example app.</h3>
           </Route>
