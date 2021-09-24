@@ -1,14 +1,10 @@
-import { useContext } from 'react';
-import ThemeContext from '../../context/ThemeContext';
+import { useContext } from "react";
+import ThemeContext from "../../context/ThemeContext";
 
 const ContextTestHeader = () => {
-    const context = useContext(ThemeContext);
+	const context = useContext(ThemeContext);
 
-    return (
-        <div>
-            Header Theme : {context.theme}
-        </div>
-    )
-}
+	return <div>Header Theme : {context.theme}</div>;
+};
 
-export default ContextTestHeader
+export default ContextTestHeader;

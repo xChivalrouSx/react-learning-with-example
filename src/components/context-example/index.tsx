@@ -1,20 +1,12 @@
-import { ThemeProvider } from '../../context/ThemeContext'
-import ContextTestButton from './ContexTestButton'
-import ContextTestHeader from './ContextTestHeader'
+import { ThemeProvider } from "../../context/ThemeContext";
+import Container from "./Container";
 
 const ContextTest = () => {
-    return (
-        <ThemeProvider>
-            <div>
-                <br />
-                <br />
-                <ContextTestHeader />
-                <hr />
-                <br />
-                <ContextTestButton />
-            </div>
-        </ThemeProvider>
-    )
-}
+	return (
+		<ThemeProvider>
+			<Container />
+		</ThemeProvider>
+	);
+};
 
-export default ContextTest
+export default ContextTest;

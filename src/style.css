@@ -61,3 +61,19 @@
 label {
 	display: block;
 }
+
+.Dark {
+	text-align: center;
+	height: 100vh;
+	width: 100%;
+	color: white;
+	background-color: black;
+}
+
+.Light {
+	text-align: center;
+	height: 100vh;
+	width: 100%;
+	color: black;
+	background-color: antiquewhite;
+}
