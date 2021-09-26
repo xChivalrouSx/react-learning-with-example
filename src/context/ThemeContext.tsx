@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface ContextValue {
 	theme: string;
@@ -14,7 +14,7 @@ const defaultContextValues: ContextValue = {
 
 const ThemeContext = createContext(defaultContextValues);
 
-export const ThemeProvider = (props: { children: any }) => {
+const ThemeProvider = (props: { children: any }) => {
 	const [theme, setTheme] = useState(localStorage.getItem("theme") || "Dark");
 
 	useEffect(() => {
@@ -32,4 +32,6 @@ export const ThemeProvider = (props: { children: any }) => {
 	);
 };
 
-export default ThemeContext;
+const useTheme = () => useContext(ThemeContext);
+
+export { useTheme, ThemeProvider };
