@@ -1,30 +1,35 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from "react";
 
 interface ContextValue {
-    theme: string;
-    setTheme: (theme: string) => void;
+	theme: string;
+	setTheme: (theme: string) => void;
 }
 
 const defaultContextValues: ContextValue = {
-    theme: "Dark",
-    setTheme: (theme: string) => { console.log(theme) }
-}
+	theme: "Dark",
+	setTheme: (theme: string) => {
+		console.log(theme);
+	},
+};
 
 const ThemeContext = createContext(defaultContextValues);
 
-export const ThemeProvider = (props: {children: any}) => {
-    const [theme, setTheme] = useState("Dark");
+export const ThemeProvider = (props: { children: any }) => {
+	const [theme, setTheme] = useState(localStorage.getItem("theme") || "Dark");
 
-    const values: ContextValue = {
-        theme,
-        setTheme
-    }
+	useEffect(() => {
+		localStorage.setItem("theme", theme);
+	}, [theme]);
+	const values: ContextValue = {
+		theme,
+		setTheme,
+	};
 
-    return (
-        <ThemeContext.Provider value={values}>
-            {props.children}
-        </ThemeContext.Provider>
-    );
-}
+	return (
+		<ThemeContext.Provider value={values}>
+			{props.children}
+		</ThemeContext.Provider>
+	);
+};
 
 export default ThemeContext;
