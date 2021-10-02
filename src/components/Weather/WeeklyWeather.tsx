@@ -14,7 +14,7 @@ const WeeklyWeather = () => {
 	useEffect(() => {
 		setIsLoading(true);
 		getCities();
-	}, []);
+	}, []); // eslint-disable-line
 
 	useEffect(() => {
 		if (isCitiesLoad()) {
@@ -25,7 +25,7 @@ const WeeklyWeather = () => {
 	useEffect(() => {
 		setIsLoading(true);
 		setWeatherInfos([]);
-	}, [selectedCity]);
+	}, [selectedCity]); // eslint-disable-line
 
 	useEffect(() => {
 		if (weatherInfos?.length === 0 && isCitiesLoad()) {
