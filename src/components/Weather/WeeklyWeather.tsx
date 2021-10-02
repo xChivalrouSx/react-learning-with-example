@@ -1,14 +1,18 @@
 import axios from "axios";
 import Moment from "moment";
 import { useEffect, useState } from "react";
+import { useLoading } from "../../context/LoadingContext";
 import DailyWeather, { DailyWeatherInfo } from "./DailyWeather";
 
 const WeeklyWeather = () => {
+	const { isLoading, setIsLoading } = useLoading();
+
 	const [cities, setCities] = useState<string[]>();
 	const [selectedCity, setSelectedCity] = useState<string>();
 	const [weatherInfos, setWeatherInfos] = useState<DailyWeatherInfo[]>();
 
 	useEffect(() => {
+		setIsLoading(true);
 		getCities();
 	}, []);
 
@@ -19,6 +23,7 @@ const WeeklyWeather = () => {
 	}, [cities]); // eslint-disable-line
 
 	useEffect(() => {
+		setIsLoading(true);
 		setWeatherInfos([]);
 	}, [selectedCity]);
 
@@ -98,40 +103,45 @@ const WeeklyWeather = () => {
 								}
 							)
 						);
+						setIsLoading(false);
 					});
 			});
 	};
 
 	return (
-		<div>
-			<select
-				className="form-select"
-				aria-label="Default select example"
-				style={{ width: "25%", margin: "auto", marginTop: "20px" }}
-				onChange={(e) => {
-					setSelectedCity(e.target.value);
-				}}
-			>
-				{cities?.map((item, index) => {
-					return selectedCity === item ? (
-						<option selected key={index} value={item}>
-							{item}
-						</option>
-					) : (
-						<option key={index} value={item}>
-							{item}
-						</option>
-					);
-				})}
-			</select>
+		<>
+			{!isLoading && (
+				<div>
+					<select
+						className="form-select"
+						aria-label="Default select example"
+						style={{ width: "25%", margin: "auto", marginTop: "20px" }}
+						onChange={(e) => {
+							setSelectedCity(e.target.value);
+						}}
+					>
+						{cities?.map((item, index) => {
+							return selectedCity === item ? (
+								<option selected key={index} value={item}>
+									{item}
+								</option>
+							) : (
+								<option key={index} value={item}>
+									{item}
+								</option>
+							);
+						})}
+					</select>
 
-			<hr />
-			<div style={{ display: "flex" }}>
-				{weatherInfos?.map((item, index) => {
-					return <DailyWeather key={index} info={item} />;
-				})}
-			</div>
-		</div>
+					<hr />
+					<div style={{ display: "flex" }}>
+						{weatherInfos?.map((item, index) => {
+							return <DailyWeather key={index} info={item} />;
+						})}
+					</div>
+				</div>
+			)}
+		</>
 	);
 };
 
