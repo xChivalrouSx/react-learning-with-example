@@ -4,6 +4,7 @@ import Contact from "./components/contact-example";
 import ContextTest from "./components/context-example/";
 import { MTable, MTableBug } from "./components/material-table-example";
 import SignUpForm from "./components/signup-example";
+import TestExample from "./components/test-counter";
 import ToDoList from "./components/todo-list-example";
 import Weather from "./components/Weather";
 import { LoadingProvider } from "./context/LoadingContext";
@@ -39,6 +40,9 @@ const App = () => {
 						<Link to="/context-example" className="nav-bar-element">
 							Context Example
 						</Link>
+						<Link to="/test-example" className="nav-bar-element">
+							Unit Test Example
+						</Link>
 					</Nav>
 				</Navbar>
 
@@ -51,6 +55,7 @@ const App = () => {
 						<Route path="/m-table" component={MTable} />
 						<Route path="/m-table-bug" component={MTableBug} />
 						<Route path="/context-example" component={ContextTest} />
+						<Route path="/test-example" component={TestExample} />
 						<Route path="/">
 							<h3 style={{ marginTop: 50 }}>
 								Welcome my react-learning-with-example app.
